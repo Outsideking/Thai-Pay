@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThaiPay - Payment & Financial System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .report-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .report-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        .transactions {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .transaction {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .transaction .time {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .transaction .amount {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇹🇭 ThaiPay</h1>
+            <p>Payment & Financial Integration Platform</p>
+        </div>
+        
+        <div class="cards">
+            <div class="card">
+                <h2>💳 Make Payment</h2>
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="amount">Amount (THB)</label>
+                        <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                    <button type="submit">Process Payment</button>
+                </form>
+                <div id="paymentMessage" class="message"></div>
+            </div>
+        </div>
+        
+        <div class="report-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>📊 Financial Report</h2>
+                <button onclick="loadReport()" style="width: auto; padding: 10px 20px; font-size: 1em;">Refresh</button>
+            </div>
+            
+            <div class="stats" id="stats">
+                <div class="stat-card">
+                    <div class="label">Total Transactions</div>
+                    <div class="value" id="totalTransactions">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total Amount</div>
+                    <div class="value" id="totalAmount">-</div>
+                </div>
+            </div>
+            
+            <h3 style="color: #667eea; margin-bottom: 15px;">Recent Transactions</h3>
+            <div id="transactionsList" class="transactions">
+                <div class="loading">Loading transactions...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Payment form handler
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amount = document.getElementById('amount').value;
+            const messageEl = document.getElementById('paymentMessage');
+            
+            try {
+                const response = await fetch(`/pay?amount=${amount}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    messageEl.className = 'message success';
+                    messageEl.style.display = 'block';
+                    messageEl.innerHTML = `
+                        <strong>Payment Successful!</strong><br>
+                        Amount: ${data.amount} THB<br>
+                        Bank Reference: ${data.bank_ref}
+                    `;
+                    document.getElementById('amount').value = '';
+                    
+                    // Reload report after successful payment
+                    setTimeout(() => loadReport(), 1000);
+                } else {
+                    throw new Error('Payment failed');
+                }
+            } catch (error) {
+                messageEl.className = 'message error';
+                messageEl.style.display = 'block';
+                messageEl.textContent = 'Payment failed. Please try again.';
+            }
+        });
+        
+        // Load report function
+        async function loadReport() {
+            try {
+                const response = await fetch('/report');
+                const data = await response.json();
+                
+                // Update stats
+                document.getElementById('totalTransactions').textContent = data.total_transactions;
+                document.getElementById('totalAmount').textContent = 
+                    new Intl.NumberFormat('th-TH', { 
+                        style: 'currency', 
+                        currency: 'THB' 
+                    }).format(data.total_amount);
+                
+                // Update transactions list
+                const transactionsList = document.getElementById('transactionsList');
+                
+                if (data.data.length === 0) {
+                    transactionsList.innerHTML = '<div class="loading">No transactions yet</div>';
+                } else {
+                    transactionsList.innerHTML = data.data
+                        .reverse()
+                        .map(transaction => `
+                            <div class="transaction">
+                                <div>
+                                    <div class="time">${new Date(transaction.time).toLocaleString('th-TH')}</div>
+                                    <div style="color: #666; font-size: 0.9em; margin-top: 5px;">Type: ${transaction.type}</div>
+                                </div>
+                                <div class="amount">
+                                    ${new Intl.NumberFormat('th-TH', { 
+                                        style: 'currency', 
+                                        currency: 'THB' 
+                                    }).format(transaction.amount)}
+                                </div>
+                            </div>
+                        `).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load report:', error);
+                document.getElementById('transactionsList').innerHTML = 
+                    '<div class="loading">Failed to load transactions</div>';
+            }
+        }
+        
+        // Load report on page load
+        loadReport();
+    </script>
+    
+    <!-- Vercel Speed Insights -->
+    <script>
+        window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+</body>
+</html>
