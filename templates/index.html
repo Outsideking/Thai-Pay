@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}ThaiPay - หน้าหลัก{% endblock %}
+
+{% block styles %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 40px 0;
+    }
+    .card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 30px;
+        margin: 20px 0;
+    }
+    .button {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 6px;
+        text-decoration: none;
+        margin: 10px;
+        transition: background 0.3s;
+    }
+    .button:hover {
+        background: #5568d3;
+    }
+    .api-endpoints {
+        margin-top: 30px;
+    }
+    .endpoint {
+        background: white;
+        border-left: 4px solid #667eea;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 4px;
+    }
+    .method {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-right: 10px;
+        font-size: 12px;
+    }
+    .method.post {
+        background: #28a745;
+        color: white;
+    }
+    .method.get {
+        background: #007bff;
+        color: white;
+    }
+    code {
+        background: #f1f1f1;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>🇹🇭 ThaiPay</h1>
+    <p class="subtitle">ระบบชำระเงิน + การบัญชี + รายงาน แบบเบาๆ</p>
+</div>
+
+<div class="card">
+    <h2>ยินดีต้อนรับ!</h2>
+    <p>ThaiPay เป็นแพลตฟอร์มการชำระเงินและการบัญชีสำหรับประเทศไทย</p>
+    <div style="margin-top: 20px;">
+        <a href="/report" class="button">📊 ดูรายงาน</a>
+        <a href="/docs" class="button">📖 API Documentation</a>
+    </div>
+</div>
+
+<div class="api-endpoints">
+    <h2>API Endpoints</h2>
+    
+    <div class="endpoint">
+        <span class="method post">POST</span>
+        <code>/pay?amount=1000</code>
+        <p style="margin-top: 10px; color: #666;">ทำการชำระเงิน</p>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span>
+        <code>/report</code>
+        <p style="margin-top: 10px; color: #666;">ดูรายงานทั้งหมด (JSON)</p>
+    </div>
+    
+    <div class="endpoint">
+        <span class="method get">GET</span>
+        <code>/report-view</code>
+        <p style="margin-top: 10px; color: #666;">ดูรายงานในรูปแบบหน้าเว็บ</p>
+    </div>
+</div>
+
+<div style="margin-top: 40px; text-align: center; color: #666; font-size: 14px;">
+    <p>© 2024 ThaiPay - Financial & Payment Integration Platform</p>
+    <p style="margin-top: 5px;">Thanva Phupingbut | Tel. +66823727103</p>
+</div>
+{% endblock %}
